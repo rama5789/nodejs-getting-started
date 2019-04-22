@@ -18,8 +18,8 @@ const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
 const config = require('./config');
-const {Datastore} = require('@google-cloud/datastore');
-const DatastoreStore = require('@google-cloud/connect-datastore')(session);
+const Firestore = require('@google-cloud/firestore');
+const FirestoreStore = require('@google-cloud/connect-firestore')(session);
 
 const app = express();
 
@@ -35,8 +35,8 @@ const sessionConfig = {
   saveUninitialized: false,
   secret: config.get('SECRET'),
   signed: true,
-  store: new DatastoreStore({
-    dataset: new Datastore({kind: 'express-sessions'}),
+  store: new FirestoreStore({
+    dataset: new Firestore({kind: 'express-sessions'}),
   }),
 };
 
