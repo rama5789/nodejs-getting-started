@@ -1,4 +1,4 @@
-// Copyright 2017, Google, Inc.
+// Copyright 2019, Google, Inc.
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -27,8 +27,8 @@ const session = require('express-session');
 const passport = require('passport');
 const config = require('./config');
 const logging = require('./lib/logging');
-const {Datastore} = require('@google-cloud/datastore');
-const DatastoreStore = require('@google-cloud/connect-datastore')(session);
+const Firestore = require('@google-cloud/firestore');
+const FirestoreStore = require('@google-cloud/connect-firestore')(session);
 
 const app = express();
 
@@ -49,8 +49,8 @@ const sessionConfig = {
   saveUninitialized: false,
   secret: config.get('SECRET'),
   signed: true,
-  store: new DatastoreStore({
-    dataset: new Datastore({kind: 'express-sessions'}),
+  store: new FirestoreStore({
+    dataset: new Firestore({kind: 'express-sessions'}),
   }),
 };
 
