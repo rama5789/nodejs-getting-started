@@ -1,9 +1,10 @@
-const { Firestore } = require('@google-cloud/firestore');
 const express = require('express');
 const session = require('express-session');
+const { Firestore } = require('@google-cloud/firestore');
+const { FirestoreStore } = require('@google-cloud/connect-firestore');
+
 const app = express();
 
-const { FirestoreStore } = require('@google-cloud/connect-firestore');
 
 app.use(
     session({
@@ -18,16 +19,16 @@ app.use(
     })
 );
 
-const colors = ['red', 'blue', 'green', 'yellow', 'pink'];
+const greetings = ['Hello World', 'Hallo Welt', 'Hola mundo', 'Salut le Monde', 'Ciao Mondo'];
 
 app.get('/', (req, res) => {
     console.log(req.session.id);
     if (!req.session.views) {
         req.session.views = 0;
-        req.session.color = colors[Math.floor(Math.random() * 5)]
+        req.session.greeting = greetings[Math.floor(Math.random() * 5)]
     }
     const views = req.session.views++;
-    res.send(`<body bgcolor=${req.session.color}>Views ${views}</body>`);
+    res.send(`${views} views for "${req.session.greeting}"`);
 });
 
 const port = process.env.PORT || 8080;
